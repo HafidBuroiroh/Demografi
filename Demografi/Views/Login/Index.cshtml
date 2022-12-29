@@ -1,0 +1,71 @@
+﻿@model Demografi.Models.Account;
+
+
+@{
+    ViewData["Title"] = "Login Page";
+    Layout = "~/Views/Shared/_LayoutFullPage.cshtml";
+
+}
+
+<style>
+    .btn {
+        background-color: #FFC107;
+        color: white;
+        font-weight: bold
+    }
+
+        .btn:hover {
+            background-color: #d6a30c;
+            color: white;
+            font-weight: bold
+        }
+
+    .form-label {
+        font-weight: bold;
+    }
+
+    .card {
+        box-shadow: -3px 3px 31px 9px rgba(0,0,0,0.43);
+        -webkit-box-shadow: -3px 3px 31px 9px rgba(0,0,0,0.43);
+        -moz-box-shadow: -3px 3px 31px 9px rgba(0,0,0,0.43);
+    }
+</style>
+
+<section class="vh-100" style="background-color: #383838;">
+    <div class="container py-5 h-100 d-flex justify-content-center align-items-center h-100">
+        <div class="row">
+            <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                <div class="card shadow-2-strong" style="border-radius: 1rem; width: 25rem;">
+                    <div class="card-body p-5">
+
+                        <form method="post" asp-action="Login">
+
+                            <h3 class="mb-4 text-center">Login Page</h3>
+                            <hr />
+                            <div style="color: red; text-align: center;">@ViewBag.msg</div>
+                            <div class="form-outline mb-3">
+                                <label class="form-label text-start" for="username">Email</label>
+                                <input type="text" class="form-control form-control-md" name="username" required />
+                            </div>
+
+                            <div class="form-outline mb-3">
+                                <label class="form-label" for="password">Password</label>
+                                <input type="password" class="form-control form-control-md" name="password" required />
+                            </div>
+
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-md btn-block" type="submit" name="submit">Login</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
