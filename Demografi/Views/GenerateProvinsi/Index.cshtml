@@ -1,0 +1,67 @@
+﻿@model IEnumerable<Demografi.Models.demografi_investor_per_provinsi_saved>
+
+@{
+    ViewData["title"] = "Generate data";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2 class="mt-5">Generate Data</h2>
+<hr />
+
+<form asp-action="GenerateProvinsi" asp-antiforgery="true" id="non" method="post">
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="inputGroup-sizing-default">From</span>
+                <input name="from" type="date" value="@ViewData["CurrentFilter"]" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="inputGroup-sizing-default">Until</span>
+                <input name="until" type="date" value="@ViewData["CurrentFilters"]" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+            </div>
+        </div>
+    </div>
+    <button name="btnsubmit" type="submit" value="Generate" class="btn btn-sm btn-success fw-bold" data-bs-toggle="modal" data-bs-target="#exampleModal">Transfer</button>
+    <input name="btnsubmit" type="submit" value="Search" class="btn btn-sm btn-success fw-bold" style="margin-left:10px;">
+</form>
+
+<div style="overflow-x:auto; margin-top:10px;">
+    <table class="table table-bordered" border="1">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Tanggal)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Periode)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.provinsi)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.jumlah_sid)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Tanggal)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Periode)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.provinsi)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.jumlah_sid)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
