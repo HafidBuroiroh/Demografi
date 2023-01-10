@@ -1,0 +1,73 @@
+﻿@model IEnumerable<Demografi.Models.demografi_investor_per_tipe_efek>
+
+@{
+    ViewData["title"] = "Transfer data Efek";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2 class="mt-5">Transfer Data Efek</h2>
+<hr />
+
+<form asp-action="Transfer" asp-antiforgery="true" id="non" method="post">
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="inputGroup-sizing-default">From</span>
+                <input name="from" type="date" value="@ViewData["CurrentFilter"]" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="inputGroup-sizing-default">Until</span>
+                <input name="until" type="date" value="@ViewData["CurrentFilters"]" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+            </div>
+        </div>
+    </div>
+    <button name="btnsubmit" type="submit" value="Transfer" class="btn btn-sm btn-success fw-bold" data-bs-toggle="modal" data-bs-target="#exampleModal">Transfer</button>
+    <input name="btnsubmit" type="submit" value="Search" class="btn btn-sm btn-success fw-bold" style="margin-left:10px;">
+</form>
+
+<div style="overflow-x:auto; margin-top:10px;">
+    <table class="table table-bordered" border="1">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.tanggal)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Periode)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Tipe_efek)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.jumlah_sid)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.jumlah_sre)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.tanggal)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Periode)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Tipe_efek)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.jumlah_sid)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.jumlah_sre)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

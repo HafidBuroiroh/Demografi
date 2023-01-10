@@ -18,6 +18,7 @@ namespace Demografi.Data
         public DbSet<demografi_investor_per_usia_saved> demografi_investor_per_usia_saved { get; set; }
         public DbSet<demografi_investor_per_tipe_efek> demografi_investor_per_tipe_efek { get; set; }
         public DbSet<demografi_investor_per_tipe_efek_saved> demografi_investor_per_tipe_efek_saved { get; set; }
+        public DbSet<demografi_investor_email_parameter> demografi_investor_email_parameter { get; set; }
 
     }
 }

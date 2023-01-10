@@ -17,7 +17,7 @@
         margin-left: 87%;
     }
 
-    .dropdown-menu {
+    .dropdown-menus {
         display: none;
         position: absolute;
         background-color: #f1f1f1;
@@ -27,7 +27,7 @@
         top: 45px;
     }
 
-    .dropdown-menu li {
+        .dropdown-menus > .dropend {
         color: black;
         padding: 12px 16px;
         text-decoration: none;
@@ -35,13 +35,59 @@
         cursor: pointer;
     }
 
-    .dropdown-menu li:hover {
+        .dropdown-menus > .dropend:hover {
         background-color: #ddd;
     }
 
     /* Show the dropdown menu on hover */
-    .dropdown:hover .dropdown-menu {
+    .dropdowns:hover .dropdown-menus {
         display: block;
+    }
+
+        .dropbtn {
+      background-color: #4CAF50;
+      color: white;
+      padding: 16px;
+      font-size: 16px;
+      border: none;
+      cursor: pointer;
+    }
+
+    /* The container <div> - needed to position the dropdown content */
+    .dp {
+      position: relative;
+      display: inline-block;
+    }
+
+    /* Dropdown Content (Hidden by Default) */
+    .dp-content {
+      display: none;
+      position: absolute;
+      background-color: #f9f9f9;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      z-index: 1;
+    }
+
+    /* Links inside the dropdown */
+    .dp-content a {
+      color: black;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+    }
+
+    /* Change color of dropdown links on hover */
+    .dp-content a:hover {background-color: #f1f1f1}
+
+    /* Show the dropdown menu on hover */
+    .dp:hover .dp-content {
+      display: block;
+    }
+
+    /* Change the background color of the dropdown button when the dropdown content is shown */
+    .dp:hover .dropbtn {
+      background-color: #3e8e41;
     }
 </style>
 
@@ -49,15 +95,33 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-black border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <div class="dropdown">
-                    <button class="btn dropdown-toggle text-light fw-bold dropbtn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <div class="dropdown dropdowns">
+                    <button class="btn dropdown-toggle text-light fw-bold" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Data SID SIPETRO OJK
                     </button>
-                    <ul class="dropdown-menu mx-3">
-                        <li>@Html.ActionLink("Transfer Data", "Index", "Transferdata", new{}, new{@class="dropdown-item"})</li>
-                        <li>@Html.ActionLink("Generate Data", "Index", "Generate", new{}, new{@class="dropdown-item"})</li>
-                        <li>@Html.ActionLink("Send Data", "Index", "Send", new{}, new{@class="dropdown-item"})</li>
-                        <li>@Html.ActionLink("Master Data", "Index", "MasterData", new{}, new{@class="dropdown-item"})</li>
+                    <ul class="dropdown-menu dropdown-menus mx-3">
+                        <div class="btn-group dropend">
+                            <button type="button" class="btn dropdown-toggle mx-3" data-bs-toggle="dropdown" aria-expanded="false">
+                                Transfer Data
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li>@Html.ActionLink("Transfer Data General", "Index", "Transferdata", new{}, new{@class="dropdown-item"})</li>
+                                <li>@Html.ActionLink("Transfer Data Provinsi", "Index", "TransferDataProvinsi", new{}, new{@class="dropdown-item"})</li>
+                                <li>@Html.ActionLink("Transfer Data Usia", "Index", "TransferDataUsia", new{}, new{@class="dropdown-item"})</li>
+                                <li>@Html.ActionLink("Transfer Data Efek", "Index", "TransferDataEfek", new{}, new{@class="dropdown-item"})</li>
+                            </ul>
+                        </div>
+                        <div class="btn-group dropend">
+                            <button type="button" class="btn dropdown-toggle mx-3" data-bs-toggle="dropdown" aria-expanded="false">
+                                Generate Data
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li>@Html.ActionLink("Generate Data General", "Index", "Generate", new{}, new{@class="dropdown-item"})</li>
+                                <li>@Html.ActionLink("Generate Data Provinsi", "Index", "GenerateProvinsi", new{}, new{@class="dropdown-item"})</li>
+                                <li>@Html.ActionLink("Generate Data Usia", "Index", "GenerateUsia", new{}, new{@class="dropdown-item"})</li>
+                                <li>@Html.ActionLink("Generate Data Efek", "Index", "GenerateEfek", new{}, new{@class="dropdown-item"})</li>
+                            </ul>
+                        </div>
                     </ul>
                 </div>
                 <div class="navbar-collapse collapse d-flex justify-content-end">
@@ -80,7 +144,7 @@
 
     </header>
     <div class="container">
-        <main role="main" class="pb-3 pt-4">
+        <main role="main" class="pb-3 pt-1">
             @RenderBody()
         </main>
     </div>
