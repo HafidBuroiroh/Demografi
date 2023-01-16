@@ -36,8 +36,7 @@ namespace Demografi.Controllers
             {
                 List<demografi_investor_per_tipe_efek_saved> users = _context.demografi_investor_per_tipe_efek_saved.Select(x => new demografi_investor_per_tipe_efek_saved
                 {
-                   tanggal = x.tanggal,
-                   Periode= x.Periode,
+                   
                    Tipe_efek= x.Tipe_efek,
                    jumlah_sid= x.jumlah_sid,
                    jumlah_sre= x.jumlah_sre,
@@ -47,27 +46,25 @@ namespace Demografi.Controllers
                 var worksheet = workbook.Worksheets.Add("Demografi Tipe Efek");
                 var currentRow = 1;
 
-                worksheet.Cell(currentRow, 1).Value = "Tanggal";
-                worksheet.Cell(currentRow, 2).Value = "Periode";
-                worksheet.Cell(currentRow, 3).Value = "Tipe Efek";
-                worksheet.Cell(currentRow, 4).Value = "Jumlah SID";
-                worksheet.Cell(currentRow, 5).Value = "Jumlah SRE";
+               
+                worksheet.Cell(currentRow, 1).Value = "Tipe Efek";
+                worksheet.Cell(currentRow, 2).Value = "Jumlah SID";
+                worksheet.Cell(currentRow, 3).Value = "Jumlah SRE";
 
                 foreach (var user in users)
                 {
                     currentRow++;
-                    worksheet.Cell(currentRow, 1).Value = user.tanggal;
-                    worksheet.Cell(currentRow, 2).Value = user.Periode;
-                    worksheet.Cell(currentRow, 3).Value = user.Tipe_efek;
-                    worksheet.Cell(currentRow, 4).Value = user.jumlah_sid;
-                    worksheet.Cell(currentRow, 5).Value = user.jumlah_sre;
+                   
+                    worksheet.Cell(currentRow, 1).Value = user.Tipe_efek;
+                    worksheet.Cell(currentRow, 2).Value = user.jumlah_sid;
+                    worksheet.Cell(currentRow, 3).Value = user.jumlah_sre;
                 }
 
                 using var stream = new MemoryStream();
                 workbook.SaveAs(stream);
                 var content = stream.ToArray();
 
-                return File(content, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "demografi_tipe_efek.xlsx");
+                return File(content, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Generate_Tipe_Efek.xlsx");
 
             }
             return View("Index", data);
