@@ -617,3 +617,16 @@ D:\Project DAC\Demografi\Demografi\bin\Debug\net6.0\Demografi.runtimeconfig.json
 D:\Project DAC\Demografi\Demografi\bin\Debug\net6.0\Demografi.pdb
 D:\Project DAC\Demografi\Demografi\obj\Debug\net6.0\Demografi.genruntimeconfig.cache
 D:\Project DAC\Demografi\Demografi\obj\Debug\net6.0\ref\Demografi.dll
+D:\Project DAC\Demografi\Demografi\bin\Debug\net6.0\MimeKit.dll
+D:\Project DAC\Demografi\Demografi\bin\Debug\net6.0\BouncyCastle.Crypto.dll
+D:\Project DAC\Demografi\Demografi\bin\Debug\net6.0\GemBox.Spreadsheet.dll
+D:\Project DAC\Demografi\Demografi\bin\Debug\net6.0\HarfBuzzSharp.dll
+D:\Project DAC\Demografi\Demografi\bin\Debug\net6.0\SkiaSharp.dll
+D:\Project DAC\Demografi\Demografi\bin\Debug\net6.0\runtimes\osx\native\libHarfBuzzSharp.dylib
+D:\Project DAC\Demografi\Demografi\bin\Debug\net6.0\runtimes\win-arm64\native\libHarfBuzzSharp.dll
+D:\Project DAC\Demografi\Demografi\bin\Debug\net6.0\runtimes\win-x64\native\libHarfBuzzSharp.dll
+D:\Project DAC\Demografi\Demografi\bin\Debug\net6.0\runtimes\win-x86\native\libHarfBuzzSharp.dll
+D:\Project DAC\Demografi\Demografi\bin\Debug\net6.0\runtimes\osx\native\libSkiaSharp.dylib
+D:\Project DAC\Demografi\Demografi\bin\Debug\net6.0\runtimes\win-arm64\native\libSkiaSharp.dll
+D:\Project DAC\Demografi\Demografi\bin\Debug\net6.0\runtimes\win-x64\native\libSkiaSharp.dll
+D:\Project DAC\Demografi\Demografi\bin\Debug\net6.0\runtimes\win-x86\native\libSkiaSharp.dll

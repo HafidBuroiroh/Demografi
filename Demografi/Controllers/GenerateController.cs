@@ -2,6 +2,11 @@
 using Demografi.Data;
 using Demografi.Models;
 using Microsoft.AspNetCore.Mvc;
+using MimeKit;
+using System.Net.Mail;
+using System.Data;
+using GemBox.Spreadsheet;
+
 
 namespace Demografi.Controllers
 {
@@ -17,7 +22,7 @@ namespace Demografi.Controllers
             return View(_context.demografi_investor_general_saved.ToList());
         }
 
-        public IActionResult Generate(DateTime from, DateTime until, string btnsubmit)
+        public IActionResult Generate(DateTime? from, DateTime? until, string btnsubmit)
         {
             var data = from d in _context.demografi_investor_general_saved select d;
             ViewData["CurrentFilter"] = from;
@@ -33,63 +38,61 @@ namespace Demografi.Controllers
 
             if (btnsubmit == "Generate")
             {
-                if (from != null && until != null)
+                List<demografi_investor_general_saved> users = _context.demografi_investor_general_saved.Select(x => new demografi_investor_general_saved
                 {
-                    data = data.Where(d => d.tanggal >= from && d.tanggal <= until);
 
-                    List<demografi_investor_general_saved> users = _context.demografi_investor_general_saved.Select(x => new demografi_investor_general_saved
-                    {
-                        jumlah_sre = x.jumlah_sre,
-                        jumlah_sid = x.jumlah_sid,
-                        jumlah_sre_aktif_terhubung_sid = x.jumlah_sre_aktif_terhubung_sid,
-                        jumlah_sre_aktif_tidak_terhubung_sid = x.jumlah_sre_aktif_tidak_terhubung_sid,
-                        jumlah_sid_dengan_sre_aktif = x.jumlah_sid_dengan_sre_aktif,
-                        jumlah_sid_dengan_sre_closed = x.jumlah_sid_dengan_sre_closed,
-                        jumlah_sre_aktif_local = x.jumlah_sre_aktif_local,
-                        jumlah_sre_aktif_asing = x.jumlah_sre_aktif_asing,
-                        jumlah_sid_local = x.jumlah_sid_local,
-                        jumlah_sid_asing = x.jumlah_sid_asing,
-                    }).ToList();
+                    jumlah_sre = x.jumlah_sre,
+                    jumlah_sid = x.jumlah_sid,
+                    jumlah_sre_aktif_terhubung_sid = x.jumlah_sre_aktif_terhubung_sid,
+                    jumlah_sre_aktif_tidak_terhubung_sid = x.jumlah_sre_aktif_tidak_terhubung_sid,
+                    jumlah_sid_dengan_sre_aktif = x.jumlah_sid_dengan_sre_aktif,
+                    jumlah_sid_dengan_sre_closed = x.jumlah_sid_dengan_sre_closed,
+                    jumlah_sre_aktif_local = x.jumlah_sre_aktif_local,
+                    jumlah_sre_aktif_asing = x.jumlah_sre_aktif_asing,
+                    jumlah_sid_local = x.jumlah_sid_local,
+                    jumlah_sid_asing = x.jumlah_sid_asing
 
-                    using var workbook = new XLWorkbook();
-                    var worksheet = workbook.Worksheets.Add("Demografi");
-                    var currentRow = 1;
+                }).ToList();
+                SpreadsheetInfo.SetLicense("FREE-LIMITED-KEY");
+                SpreadsheetInfo.FreeLimitReached += (sender, e) => e.FreeLimitReachedAction = FreeLimitReachedAction.ContinueAsTrial;
+                var workbook = new ExcelFile();
+                var worksheet = workbook.Worksheets.Add("DataTable to Sheet");
+                var dataTable = new DataTable();
 
-                    worksheet.Cell(currentRow, 1).Value = "Jumlah SRE";
-                    worksheet.Cell(currentRow, 2).Value = "Jumlah SID";
-                    worksheet.Cell(currentRow, 3).Value = "Jumlah SRE Terhubung SID";
-                    worksheet.Cell(currentRow, 4).Value = "Jumlah SRE Aktif Tidak Terhubung SID";
-                    worksheet.Cell(currentRow, 5).Value = "Jumlah SID Dengan SRE Aktif";
-                    worksheet.Cell(currentRow, 6).Value = "Jumlah SID Dengan SRE Closed";
-                    worksheet.Cell(currentRow, 7).Value = "Jumlah SRE Aktif Local";
-                    worksheet.Cell(currentRow, 8).Value = "Jumlah SRE Aktif Asing";
-                    worksheet.Cell(currentRow, 9).Value = "Jumlah SID Local";
-                    worksheet.Cell(currentRow, 10).Value = "Jumlah SID Asing";
+                dataTable.Columns.Add("Jumlah SRE", typeof(int));
+                dataTable.Columns.Add("Jumlah SID", typeof(string));
+                dataTable.Columns.Add("Jumlah SRE Aktif Terhubung SID", typeof(string));
+                dataTable.Columns.Add("Jumlah SRE Aktif Tidak Terhubung SID", typeof(string));
+                dataTable.Columns.Add("Jumlah SID dengan SRE Aktif", typeof(string));
+                dataTable.Columns.Add("Jumlah SID dengan SRE Closed", typeof(string));
+                dataTable.Columns.Add("Jumlah SRE Aktif Local", typeof(string));
+                dataTable.Columns.Add("Jumlah SRE Aktif Asing", typeof(string));
+                dataTable.Columns.Add("Jumlah SID Aktif Local", typeof(string));
+                dataTable.Columns.Add("Jumlah SID Aktif Asing", typeof(string));
 
-                    foreach (var user in users)
-                    {
-                        currentRow++;
-                        worksheet.Cell(currentRow, 1).Value = user.jumlah_sre;
-                        worksheet.Cell(currentRow, 2).Value = user.jumlah_sid;
-                        worksheet.Cell(currentRow, 3).Value = user.jumlah_sre_aktif_terhubung_sid;
-                        worksheet.Cell(currentRow, 4).Value = user.jumlah_sre_aktif_tidak_terhubung_sid;
-                        worksheet.Cell(currentRow, 5).Value = user.jumlah_sid_dengan_sre_aktif;
-                        worksheet.Cell(currentRow, 6).Value = user.jumlah_sid_dengan_sre_closed;
-                        worksheet.Cell(currentRow, 7).Value = user.jumlah_sre_aktif_local;
-                        worksheet.Cell(currentRow, 8).Value = user.jumlah_sre_aktif_asing;
-                        worksheet.Cell(currentRow, 9).Value = user.jumlah_sid_local;
-                        worksheet.Cell(currentRow, 10).Value = user.jumlah_sid_asing;
-                    }
-
-                    using var stream = new MemoryStream();
-                    workbook.SaveAs(stream);
-                    var content = stream.ToArray();
-
-                    return File(content, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Generate_General.xlsx");
-
+                foreach (var user in users)
+                {
+                dataTable.Rows.Add(new object[] { 100, user.jumlah_sre  });
+                dataTable.Rows.Add(new object[] { 101, user.jumlah_sid  });
+                dataTable.Rows.Add(new object[] { 102, user.jumlah_sre_aktif_terhubung_sid  });
+                dataTable.Rows.Add(new object[] { 103, user.jumlah_sre_aktif_tidak_terhubung_sid  });
+                dataTable.Rows.Add(new object[] { 104, user.jumlah_sid_dengan_sre_aktif  });
+                dataTable.Rows.Add(new object[] { 105, user.jumlah_sid_dengan_sre_closed  });
+                dataTable.Rows.Add(new object[] { 106, user.jumlah_sre_aktif_local  });
+                dataTable.Rows.Add(new object[] { 107, user.jumlah_sre_aktif_asing  });
+                dataTable.Rows.Add(new object[] { 108, user.jumlah_sid_local  });
+                dataTable.Rows.Add(new object[] { 109, user.jumlah_sid_asing  });
                 }
+                worksheet.InsertDataTable(dataTable,
+                new InsertDataTableOptions()
+                {
+                    ColumnHeaders = true,
+                    StartRow = 2
+                });
+                workbook.Save("Generate_General.xlsx");
             }
             return View("Index", data);
         }
     }
 }
+
