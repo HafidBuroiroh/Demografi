@@ -2,15 +2,21 @@
 using Demografi.Data;
 using Demografi.Models;
 using Microsoft.AspNetCore.Mvc;
+using MimeKit;
+using System.IO;
+using System.Net.Mail;
+using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
 namespace Demografi.Controllers
 {
     public class GenerateUsiaController : Controller
     {
         private readonly DataContext _context;
-        public GenerateUsiaController(DataContext context)
+        private IHostingEnvironment _IHosting;
+        public GenerateUsiaController(DataContext context, IHostingEnvironment IHosting)
         {
             _context = context;
+            _IHosting = IHosting;
         }
         public IActionResult Index()
         {
@@ -55,11 +61,40 @@ namespace Demografi.Controllers
                     worksheet.Cell(currentRow, 2).Value = user.jumlah_sid;
 
                 }
+                var location = _IHosting.WebRootPath + "/Text/";
+                var filename = location + "Data_Usia.xlsx";
                 using var stream = new MemoryStream();
-                workbook.SaveAs(stream);
                 var content = stream.ToArray();
+                workbook.SaveAs(filename);
 
-                return File(content, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Generate_Usia.xlsx");
+                var date = DateTime.Now;
+                var body = new BodyBuilder();
+                using (MailMessage mail = new MailMessage())
+                {
+                    mail.From = new MailAddress("ihsansepriawal@gmail.com");
+                    mail.To.Add("ihsandac@gmail.com");
+                    mail.Subject = $"Status Generate Excel Data Demografi Investor Data Demografi Investor_{date.ToString("yyyy-MM")}";
+                    mail.Body = $"Dengan Hormat,\r\n\r\nDengan ini kami informasikan bahwa per tanggal {date.ToString("dd-MM-yyyy")} proses generate Excel Data Demografi Investor dinyatakan sukses";
+                    DirectoryInfo dir = new DirectoryInfo(location);
+                    foreach (FileInfo file in dir.GetFiles("."))
+                    {
+                        if (file.Exists)
+                        {
+                            mail.Attachments.Add(new Attachment(filename));
+                        }
+                    }
+
+                    using (SmtpClient smtp = new SmtpClient())
+                    {
+                        smtp.UseDefaultCredentials = false;
+                        smtp.EnableSsl = true;
+                        smtp.Credentials = new System.Net.NetworkCredential("ihsansepriawal@gmail.com", "dnaxriscszcfyljt");
+                        smtp.Host = "smtp.gmail.com";
+                        smtp.Port = 587;
+                        smtp.Send(mail);
+                    };
+                }
+            return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Data_Usia.xlsx");
             }
             return View("index", data);
         }

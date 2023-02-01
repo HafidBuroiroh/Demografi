@@ -40,6 +40,34 @@ namespace Demografi.Controllers
 
             if (btnsubmit == "Generate")
             {
+               
+                List<demografi_investor_per_provinsi_saved> users = _context.demografi_investor_per_provinsi_saved.Select(x => new demografi_investor_per_provinsi_saved
+                {
+                    provinsi = x.provinsi,
+                    jumlah_sid = x.jumlah_sid,
+
+                }).ToList();
+
+                using var workbook = new XLWorkbook();
+                var worksheet = workbook.Worksheets.Add("Demografi");
+                var currentRow = 1;
+
+                worksheet.Cell(currentRow, 1).Value = "Provinsi";
+                worksheet.Cell(currentRow, 2).Value = "Jumlah SID";
+
+                foreach (var user in users)
+                {
+                    currentRow++;
+                    worksheet.Cell(currentRow, 1).Value = user.provinsi;
+                    worksheet.Cell(currentRow, 2).Value = user.jumlah_sid;
+                }
+
+                var location = _IHosting.WebRootPath + "/Text/";
+                var filename = location + "Data_Provinsi.xlsx";
+                using var stream = new MemoryStream();
+                var content = stream.ToArray();
+                workbook.SaveAs(filename);
+
                 var date = DateTime.Now;
                 var body = new BodyBuilder();
                 using (MailMessage mail = new MailMessage())
@@ -48,6 +76,14 @@ namespace Demografi.Controllers
                     mail.To.Add("ihsandac@gmail.com");
                     mail.Subject = $"Status Generate Excel Data Demografi Investor Data Demografi Investor_{date.ToString("yyyy-MM")}";
                     mail.Body = $"Dengan Hormat,\r\n\r\nDengan ini kami informasikan bahwa per tanggal {date.ToString("dd-MM-yyyy")} proses generate Excel Data Demografi Investor dinyatakan sukses";
+                    DirectoryInfo dir = new DirectoryInfo(location);
+                    foreach (FileInfo file in dir.GetFiles("."))
+                    {
+                        if (file.Exists)
+                        {
+                            mail.Attachments.Add(new Attachment(filename));
+                        }
+                    }
 
                     using (SmtpClient smtp = new SmtpClient())
                     {
@@ -59,44 +95,9 @@ namespace Demografi.Controllers
                         smtp.Send(mail);
                     };
                 }
-
-
-                List<demografi_investor_per_provinsi_saved> users = _context.demografi_investor_per_provinsi_saved.Select(x => new demografi_investor_per_provinsi_saved
-                {
-                    provinsi = x.provinsi,
-                    jumlah_sid = x.jumlah_sid,
-
-                }).ToList();
-                using (XLWorkbook workbook = new XLWorkbook())
-                {
-                    var worksheet = workbook.Worksheets.Add("Demografi");
-                    var currentRow = 1;
-
-                    worksheet.Cell(currentRow, 1).Value = "Provinsi";
-                    worksheet.Cell(currentRow, 2).Value = "Jumlah SID";
-
-                    foreach (var user in users)
-                    {
-                        currentRow++;
-                        worksheet.Cell(currentRow, 1).Value = user.provinsi;
-                        worksheet.Cell(currentRow, 2).Value = user.jumlah_sid;
-
-                    }
-
-                    using (MemoryStream stream = new MemoryStream())
-                    {
-                        var location = _IHosting.WebRootPath;
-                        string fileName = $"Generate_Provinsi.xlsx";
-                        Response.AddHeader("content-disposition", "attachment;  filename=" + fileName);
-                        var Output = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\generate", fileName);
-                        workbook.SaveAs(stream);
-                        return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Generate_Provinsi.xlsx");
-                    }
-                }
-
-               
             }
-             return View("Index", data);
+            return View("Index", data);
+
         }
     }
 }

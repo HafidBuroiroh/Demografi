@@ -29,7 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\generate\" />
+    <Folder Include="wwwroot\Text\" />
   </ItemGroup>
 
 </Project>

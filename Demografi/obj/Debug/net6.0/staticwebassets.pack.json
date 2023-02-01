@@ -5,6 +5,22 @@
       "PackagePath": "staticwebassets\\Demografi.bundle.scp.css"
     },
     {
+      "Id": "D:\\Project DAC\\Demografi\\Demografi\\wwwroot\\Text\\Data_Efek.xlsx",
+      "PackagePath": "staticwebassets\\Text\\Data_Efek.xlsx"
+    },
+    {
+      "Id": "D:\\Project DAC\\Demografi\\Demografi\\wwwroot\\Text\\Data_General.xlsx",
+      "PackagePath": "staticwebassets\\Text\\Data_General.xlsx"
+    },
+    {
+      "Id": "D:\\Project DAC\\Demografi\\Demografi\\wwwroot\\Text\\Data_Provinsi.xlsx",
+      "PackagePath": "staticwebassets\\Text\\Data_Provinsi.xlsx"
+    },
+    {
+      "Id": "D:\\Project DAC\\Demografi\\Demografi\\wwwroot\\Text\\Data_Usia.xlsx",
+      "PackagePath": "staticwebassets\\Text\\Data_Usia.xlsx"
+    },
+    {
       "Id": "D:\\Project DAC\\Demografi\\Demografi\\wwwroot\\css\\site.css",
       "PackagePath": "staticwebassets\\css\\site.css"
     },
